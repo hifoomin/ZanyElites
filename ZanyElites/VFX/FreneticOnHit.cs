@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -33,12 +34,9 @@ namespace ZanyElites.VFX
             light.range = 7f;
             light.intensity = 13f;
 
-            VFX = ClonedObject;
-        }
+            ContentAddition.AddEffect(ClonedObject);
 
-        public override void Register()
-        {
-            base.Register();
+            VFX = ClonedObject;
         }
     }
 }

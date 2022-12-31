@@ -74,6 +74,7 @@ namespace ZanyElites
             {
                 ChatMessage.Send("A Zany Elite has appeared!");
             }
+            ZanyElitesLogger.LogFatal("CombatDirector.baseEliteCostMultiplier is " + );
             return orig(self, spawnCard, eliteDef, spawnTarget, spawnDistance, preventOverhead, valueMultiplier, placementMode);
         }
 

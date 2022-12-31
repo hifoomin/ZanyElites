@@ -32,10 +32,5 @@ namespace ZanyElites.VFX
         {
             ClonedObject = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>(Key).WaitForCompletion(), NewName, false);
         }
-
-        public virtual void Register()
-        {
-            ContentAddition.AddEffect(ClonedObject);
-        }
     }
 }

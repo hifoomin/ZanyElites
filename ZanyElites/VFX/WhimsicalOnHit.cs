@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using R2API;
+using UnityEngine;
 
 namespace ZanyElites.VFX
 {
@@ -24,12 +25,10 @@ namespace ZanyElites.VFX
             pollenRadial.gameObject.SetActive(false);
             pollenSingle2.gameObject.SetActive(false);
             distortionWave2.color = new Color32(208, 157, 183, 255);
-            VFX = ClonedObject;
-        }
 
-        public override void Register()
-        {
-            base.Register();
+            ContentAddition.AddEffect(ClonedObject);
+
+            VFX = ClonedObject;
         }
     }
 }

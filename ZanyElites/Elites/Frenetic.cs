@@ -116,7 +116,7 @@ namespace ZanyElites.Elites
                 var body = attacker.GetComponent<CharacterBody>();
                 if (body && body.equipmentSlot && body.HasBuff(EliteBuffDef))
                 {
-                    body.AddTimedBuff(FreneticOnHitBuff, 4f, 4);
+                    body.AddTimedBuff(FreneticOnHitBuff, 5f, 3);
                     var effect = FreneticOnHit.VFX;
                     EffectManager.SpawnEffect(effect, new EffectData { _origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(body.equipmentSlot.GetAimRay().direction) }, true);
                 }
@@ -129,18 +129,18 @@ namespace ZanyElites.Elites
             orig(self);
             if (self.HasBuff(EliteBuffDef) && self.equipmentSlot)
             {
-                self.attackSpeed += (1 - self.healthComponent.combinedHealthFraction) * 0.3f;
-                self.moveSpeed += (1 - self.healthComponent.combinedHealthFraction) * 0.3f;
+                self.attackSpeed += (1 - self.healthComponent.combinedHealthFraction) * 0.4f;
+                self.moveSpeed += (1 - self.healthComponent.combinedHealthFraction) * 0.4f;
                 var sl = self.skillLocator;
                 if (sl)
                 {
-                    if (sl.primary) sl.primary.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.3f);
+                    if (sl.primary) sl.primary.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.4f);
 
-                    if (sl.secondary) sl.secondary.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.3f);
+                    if (sl.secondary) sl.secondary.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.4f);
 
-                    if (sl.utility) sl.utility.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.3f);
+                    if (sl.utility) sl.utility.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.4f);
 
-                    if (sl.special) sl.special.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.3f);
+                    if (sl.special) sl.special.cooldownScale *= 1 - ((1 - self.healthComponent.combinedHealthFraction) * 0.4f);
                 }
             }
         }

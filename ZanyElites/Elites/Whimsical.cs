@@ -89,7 +89,7 @@ namespace ZanyElites.Elites
                 var body = damageInfo.attacker.GetComponent<CharacterBody>();
                 if (body && body.equipmentSlot && body.HasBuff(EliteBuffDef))
                 {
-                    float force = -3500f * damageInfo.procCoefficient;
+                    float force = -4000f * damageInfo.procCoefficient;
                     damageInfo.force = Vector3.Scale(damageInfo.force, -Vector3.one);
                     damageInfo.force += body.equipmentSlot.GetAimRay().direction * force;
                     damageInfo.canRejectForce = false;
