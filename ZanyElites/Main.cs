@@ -3,11 +3,13 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using R2API;
 using R2API.ContentManagement;
+using R2API.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using ZanyElites.VFX;
 
 namespace ZanyElites
 {
@@ -16,6 +18,7 @@ namespace ZanyElites
     [BepInDependency(R2APIContentManager.PluginGUID)]
     [BepInDependency(EliteAPI.PluginGUID)]
     [BepInDependency(ItemAPI.PluginGUID)]
+    [BepInDependency(PrefabAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class Main : BaseUnityPlugin
     {
@@ -39,13 +42,21 @@ namespace ZanyElites
             ZanyElitesLogger = Logger;
             ZanyElitesConfig = Config;
 
-            // zanyelites = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("ZanyElites.dll", "zanyelites"));
+            zanyelites = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("ZanyElites.dll", "zanyelites"));
+
+            var effectTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EffectBase)));
+
+            foreach (var effectType in effectTypes)
+            {
+                var effect = (EffectBase)Activator.CreateInstance(effectType);
+                effect.Init();
+            }
 
             var EliteEquipmentTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EliteEquipmentBase)));
 
             foreach (var eliteEquipmentType in EliteEquipmentTypes)
             {
-                EliteEquipmentBase eliteEquipment = (EliteEquipmentBase)System.Activator.CreateInstance(eliteEquipmentType);
+                var eliteEquipment = (EliteEquipmentBase)Activator.CreateInstance(eliteEquipmentType);
                 if (ValidateEliteEquipment(eliteEquipment, EliteEquipments))
                 {
                     eliteEquipment.Init(Config);
@@ -53,6 +64,17 @@ namespace ZanyElites
             }
 
             ZanyElitesLogger.LogInfo("==+----------------==ELITES==----------------+==");
+
+            On.RoR2.CombatDirector.Spawn += CombatDirector_Spawn;
+        }
+
+        private bool CombatDirector_Spawn(On.RoR2.CombatDirector.orig_Spawn orig, RoR2.CombatDirector self, RoR2.SpawnCard spawnCard, RoR2.EliteDef eliteDef, Transform spawnTarget, RoR2.DirectorCore.MonsterSpawnDistance spawnDistance, bool preventOverhead, float valueMultiplier, RoR2.DirectorPlacementRule.PlacementMode placementMode)
+        {
+            if (eliteDef == Elites.Frenetic.Instance.EliteDef || eliteDef == Elites.Whimsical.Instance.EliteDef)
+            {
+                ChatMessage.Send("A Zany Elite has appeared!");
+            }
+            return orig(self, spawnCard, eliteDef, spawnTarget, spawnDistance, preventOverhead, valueMultiplier, placementMode);
         }
 
         public bool ValidateEliteEquipment(EliteEquipmentBase eliteEquipment, List<EliteEquipmentBase> eliteEquipmentList)

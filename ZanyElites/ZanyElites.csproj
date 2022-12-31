@@ -86,6 +86,9 @@
     <Reference Include="R2API.Language">
       <HintPath>..\..\..\..\R2API.Language.dll</HintPath>
     </Reference>
+    <Reference Include="R2API.Prefab">
+      <HintPath>..\..\..\..\R2API.Prefab.dll</HintPath>
+    </Reference>
     <Reference Include="R2API.RecalculateStats">
       <HintPath>..\..\..\..\R2API.RecalculateStats.dll</HintPath>
     </Reference>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static RoR2.CombatDirector;
 
 namespace ZanyElites
@@ -98,6 +99,11 @@ namespace ZanyElites
         /// <para>P.S. CreateItemDisplayRules(); does not have to be called in this, as it already gets called in CreateEquipment();</para>
         /// </summary>
         /// <param name="config">The config file that will be passed into this from the main class.</param>
+        ///
+        private static GameObject hauntedPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/EliteHaunted/PickupEliteHaunted.prefab").WaitForCompletion();
+
+        private static GameObject firePrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/EliteFire/PickupEliteFire.prefab").WaitForCompletion();
+
         public abstract void Init(ConfigFile config);
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
@@ -114,7 +120,7 @@ namespace ZanyElites
         protected void CreateEquipment()
         {
             EliteBuffDef = ScriptableObject.CreateInstance<BuffDef>();
-            EliteBuffDef.name = EliteAffixToken;
+            EliteBuffDef.name = "ELITE_ZANYELITES_" + EliteAffixToken + "_BUFF";
             EliteBuffDef.buffColor = EliteBuffColor;
             EliteBuffDef.canStack = false;
             EliteBuffDef.iconSprite = EliteBuffIcon;
@@ -151,6 +157,7 @@ namespace ZanyElites
             EliteDef.eliteEquipmentDef = EliteEquipmentDef;
             EliteDef.healthBoostCoefficient = HealthMultiplier;
             EliteDef.damageBoostCoefficient = DamageMultiplier;
+            EliteDef.shaderEliteRampIndex = 0;
 
             var baseEliteTierDefs = EliteAPI.GetCombatDirectorEliteTiers();
             if (!CanAppearInEliteTiers.All(x => baseEliteTierDefs.Contains(x)))
@@ -198,6 +205,16 @@ namespace ZanyElites
         protected abstract bool ActivateEquipment(EquipmentSlot slot);
 
         public abstract void Hooks();
+
+        public virtual GameObject CreateAffixModel(Color32 color, bool tier2 = false)
+        {
+            GameObject gameObject = PrefabAPI.InstantiateClone(tier2 ? hauntedPrefab : firePrefab, "PickupAffix" + EliteEquipmentName, false);
+            Material material = GameObject.Instantiate<Material>(gameObject.GetComponentInChildren<MeshRenderer>().material);
+            material.color = color;
+            foreach (Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
+                renderer.material = material;
+            return gameObject;
+        }
 
         #region Targeting Setup
 
