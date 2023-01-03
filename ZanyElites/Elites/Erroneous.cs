@@ -90,6 +90,7 @@ namespace ZanyElites.Elites
         {
             if (shouldRun)
             {
+                Main.ZanyElitesLogger.LogFatal("shouldRun in ProjectileGhostController is true, particles will be scaled");
                 ParticleSystem[] componentsInChildren = self.GetComponentsInChildren<ParticleSystem>();
                 for (int i = 0; i < componentsInChildren.Length; i++)
                 {
@@ -116,6 +117,7 @@ namespace ZanyElites.Elites
             if (body && body.HasBuff(EliteBuffDef) && gameObject && splitType > SplitType.None)
             {
                 shouldRun = true;
+                Main.ZanyElitesLogger.LogFatal("InitializeProjectile body has elite buff def and shouldRun was set to true");
                 var transform = gameObject.transform;
                 if (transform)
                 {
@@ -164,11 +166,13 @@ namespace ZanyElites.Elites
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
-            var body = fireProjectileInfo.owner.gameObject.GetComponent<CharacterBody>();
             if (!copySpikestripWhichCopiesAetherium)
             {
+                var body = fireProjectileInfo.owner.gameObject.GetComponent<CharacterBody>();
                 if (body && body.HasBuff(EliteBuffDef))
                 {
+                    Main.ZanyElitesLogger.LogFatal("FireProjectileInfo body has elite buff def and shouldRun was set to true");
+                    shouldRun = true;
                     var splitType = CanProjectileSplit(fireProjectileInfo);
                     if (splitType > SplitType.None)
                     {
@@ -204,6 +208,7 @@ namespace ZanyElites.Elites
             {
                 shouldRun = false;
                 orig(self, fireProjectileInfo);
+                Main.ZanyElitesLogger.LogFatal("orig self of fireprojectileinfo hook ran");
             }
         }
 
