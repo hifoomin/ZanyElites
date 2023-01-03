@@ -17,7 +17,7 @@ namespace ZanyElites.Elites
 
         public override string EliteEquipmentPickupDesc => "Become an aspect of madness.";
 
-        public override string EliteEquipmentFullDescription => "";
+        public override string EliteEquipmentFullDescription => "Become an aspect of madness.";
 
         public override string EliteEquipmentLore => "";
 
