@@ -78,14 +78,14 @@ namespace ZanyElites
         public EliteDef EliteDef;
 
         /// <summary>
-        /// How many more/less times the health should the elite have compared to its standard form?
+        /// Elite stat multiplier, defaults to 4 (Tier 1) here.
         /// </summary>
-        public virtual float HealthMultiplier { get; set; } = 1;
+        public virtual float HealthMultiplier { get; set; } = 4;
 
         /// <summary>
-        /// How many more/less times the damage should the elite have compared to its standard form?
+        /// Elite stat multiplier, defaults to 2 (Tier 1) here.
         /// </summary>
-        public virtual float DamageMultiplier { get; set; } = 1;
+        public virtual float DamageMultiplier { get; set; } = 2;
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
