@@ -88,7 +88,7 @@ namespace ZanyElites.Elites
 
         private void ProjectileGhostController_Awake(On.RoR2.Projectile.ProjectileGhostController.orig_Awake orig, ProjectileGhostController self)
         {
-            if (shouldRun)
+            if (self.)
             {
                 Main.ZanyElitesLogger.LogFatal("shouldRun in ProjectileGhostController is true, particles will be scaled");
                 ParticleSystem[] componentsInChildren = self.GetComponentsInChildren<ParticleSystem>();
