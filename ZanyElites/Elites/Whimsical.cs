@@ -2,7 +2,9 @@
 using R2API;
 using RoR2;
 using System;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using ZanyElites.VFX;
 
 namespace ZanyElites.Elites
@@ -29,6 +31,8 @@ namespace ZanyElites.Elites
 
         public override Texture2D EliteRampTexture => Main.zanyelites.LoadAsset<Texture2D>("Assets/ZanyElites/texWhimsicalRamp.png");
 
+        public override CombatDirector.EliteTierDef[] CanAppearInEliteTiers => EliteAPI.GetCombatDirectorEliteTiers().Where(x => x.eliteTypes.Contains(Addressables.LoadAssetAsync<EliteDef>("RoR2/Base/EliteFire/edFire.asset").WaitForCompletion())).ToArray();
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -45,29 +49,6 @@ namespace ZanyElites.Elites
 
         private void CreateEliteTiers()
         {
-            //For this, if you want to create your own elite tier def to place your elite, you can do it here.
-            //Otherwise, don't set CanAppearInEliteTiers and it will appear in the first vanilla tier.
-
-            //In this we create our own tier which we'll put our elites in. It has:
-            //- 6 times the base elite cost.
-            //- It can only become available to spawn after the player has looped at least once.
-
-            CanAppearInEliteTiers = new CombatDirector.EliteTierDef[]
-            {
-                new CombatDirector.EliteTierDef()
-                {
-                    costMultiplier = CombatDirector.baseEliteCostMultiplier,
-                    eliteTypes = Array.Empty<EliteDef>(),
-                    isAvailable = SetAvailability
-                }
-           };
-
-            //Additional note: since this accepts an array, it supports multiple elite tier defs, but do not put a cost of 0 on the cost multiplier.
-        }
-
-        private bool SetAvailability(SpawnCard.EliteRules arg)
-        {
-            return arg == SpawnCard.EliteRules.Default;
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

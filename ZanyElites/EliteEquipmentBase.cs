@@ -80,12 +80,12 @@ namespace ZanyElites
         /// <summary>
         /// How many more/less times the health should the elite have compared to its standard form?
         /// </summary>
-        public virtual float HealthMultiplier { get; set; } = 4;
+        public virtual float HealthMultiplier { get; set; } = 1;
 
         /// <summary>
         /// How many more/less times the damage should the elite have compared to its standard form?
         /// </summary>
-        public virtual float DamageMultiplier { get; set; } = 2;
+        public virtual float DamageMultiplier { get; set; } = 1;
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
@@ -99,38 +99,37 @@ namespace ZanyElites
         /// <para>P.S. CreateItemDisplayRules(); does not have to be called in this, as it already gets called in CreateEquipment();</para>
         /// </summary>
         /// <param name="config">The config file that will be passed into this from the main class.</param>
-        ///
+        public abstract void Init(ConfigFile config);
+
         private static GameObject hauntedPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/EliteHaunted/PickupEliteHaunted.prefab").WaitForCompletion();
 
         private static GameObject firePrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/EliteFire/PickupEliteFire.prefab").WaitForCompletion();
-
-        public abstract void Init(ConfigFile config);
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
         protected void CreateLang()
         {
-            LanguageAPI.Add("ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_NAME", EliteEquipmentName);
-            LanguageAPI.Add("ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_PICKUP", EliteEquipmentPickupDesc);
-            LanguageAPI.Add("ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_DESCRIPTION", EliteEquipmentFullDescription);
-            LanguageAPI.Add("ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_LORE", EliteEquipmentLore);
-            LanguageAPI.Add("ELITE_ZANYELITES_" + EliteAffixToken + "_MODIFIER", EliteModifier + " {0}");
+            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_NAME", EliteEquipmentName);
+            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_PICKUP", EliteEquipmentPickupDesc);
+            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_DESCRIPTION", EliteEquipmentFullDescription);
+            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_LORE", EliteEquipmentLore);
+            LanguageAPI.Add("ELITE_" + EliteAffixToken + "_MODIFIER", EliteModifier + " {0}");
         }
 
         protected void CreateEquipment()
         {
             EliteBuffDef = ScriptableObject.CreateInstance<BuffDef>();
-            EliteBuffDef.name = "ELITE_ZANYELITES_" + EliteAffixToken + "_BUFF";
+            EliteBuffDef.name = EliteAffixToken;
             EliteBuffDef.buffColor = EliteBuffColor;
             EliteBuffDef.canStack = false;
             EliteBuffDef.iconSprite = EliteBuffIcon;
 
             EliteEquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
-            EliteEquipmentDef.name = "ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken;
-            EliteEquipmentDef.nameToken = "ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_NAME";
-            EliteEquipmentDef.pickupToken = "ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_PICKUP";
-            EliteEquipmentDef.descriptionToken = "ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_DESCRIPTION";
-            EliteEquipmentDef.loreToken = "ELITE_EQUIPMENT_ZANYELITES_" + EliteAffixToken + "_LORE";
+            EliteEquipmentDef.name = "ELITE_EQUIPMENT_" + EliteAffixToken;
+            EliteEquipmentDef.nameToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_NAME";
+            EliteEquipmentDef.pickupToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_PICKUP";
+            EliteEquipmentDef.descriptionToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_DESCRIPTION";
+            EliteEquipmentDef.loreToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_LORE";
             EliteEquipmentDef.pickupModelPrefab = EliteEquipmentModel;
             EliteEquipmentDef.pickupIconSprite = EliteEquipmentIcon;
             EliteEquipmentDef.appearsInSinglePlayer = AppearsInSinglePlayer;
@@ -152,8 +151,8 @@ namespace ZanyElites
         protected void CreateElite()
         {
             EliteDef = ScriptableObject.CreateInstance<EliteDef>();
-            EliteDef.name = "ELITE_ZANYELITES_" + EliteAffixToken;
-            EliteDef.modifierToken = "ELITE_ZANYELITES_" + EliteAffixToken + "_MODIFIER";
+            EliteDef.name = "ELITE_" + EliteAffixToken;
+            EliteDef.modifierToken = "ELITE_" + EliteAffixToken + "_MODIFIER";
             EliteDef.eliteEquipmentDef = EliteEquipmentDef;
             EliteDef.healthBoostCoefficient = HealthMultiplier;
             EliteDef.damageBoostCoefficient = DamageMultiplier;
